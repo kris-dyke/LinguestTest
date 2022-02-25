@@ -1,0 +1,32 @@
+import DriveiOS
+import CoreLocation
+import UserNotifications
+
+
+let locationManager = CLLocationManager()
+locationManager.requestWhenInUseAuthorization()     // or 'requestAlwaysAuthorization()'
+
+UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound])
+{ granted, error in
+
+}
+
+let apiUrl = URL(string: $URLString)!
+
+let entityInfo = EntityInfo()
+entityInfo.credential = Credential(id: $userId, token: $secret)
+entityInfo.device = Device(externalId: $deviceId)
+entityInfo.driver = Driver(id: $driverId)
+entityInfo.vehicle = Vehicle(id: $vehicleId)
+entityInfo.reseller = Reseller(id: $resellerId)
+
+/**
+// Uncomment the following block of code if you wish to bench-test using a GPX file
+let gpxTracker = GpxLocationProvider(gpxResourceName: "GPXFileNameSampleTrack")
+guard let driveManager = try? DriveManager(apiUrl: apiUrl) else {
+    // Handle exception here
+    return
+}
+driveManager.locationProvider = gpxTracker
+*/
+driveManager.start(withEntityInfo: entityInfo)
